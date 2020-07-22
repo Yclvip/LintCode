@@ -1,9 +1,16 @@
 M
+1526453488
+tags: Tree, BFS
 
-普通BFS，用一个queue，加上一个queue.size()来交替换行.
+如题, 但是output要倒序.
 
-rst里面add(0,...)每次都add在list开头
+#### BFS
+- 跟Binary Tree Level Order Traversal一样,只不过存result一直存在存在0位.
 
+
+#### DFS
+- 根据level来append每个list
+- rst里面add(0,...)每次都add在list开头
 
 ```
 
@@ -32,6 +39,35 @@ Tags Expand
 Queue Binary Tree Binary Tree Traversal Breadth First Search
 */
 
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        ArrayList<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            final ArrayList<Integer> list = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                final TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            result.add(0, list);
+        }// end while
+        
+        return result;
+    }
+}
+
 /**
  * Definition of TreeNode:
  * public class TreeNode {
@@ -43,7 +79,80 @@ Queue Binary Tree Binary Tree Traversal Breadth First Search
  *     }
  * }
  */
- 
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        ArrayList<List<Integer>> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        
+        while (!queue.isEmpty()) {
+            final ArrayList<Integer> list = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                final TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+            result.add(0, list);
+        }// end while
+        
+        return result;
+    }
+}
+
+/*
+Thoughts:
+Breadth first traversal. Add to 0 position every time.
+BFS uses a queue for level -> traversal completes when the queue is drained.
+Use another queue to store next level, and switch with current queue when need to be.
+*/
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        final List<List<Integer>> result = new ArrayList<List<Integer>>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        Queue<TreeNode> queueLevel = new LinkedList<>();
+        List<Integer> level = new ArrayList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            final TreeNode node = queue.poll();
+            level.add(node.val);
+            if (node.left != null) {
+                queueLevel.add(node.left);
+            }
+            if (node.right != null) {
+                queueLevel.add(node.right);
+            }
+            if (queue.isEmpty()) {
+                queue = queueLevel;
+                result.add(0, level);
+                queueLevel = new LinkedList<>();
+                level = new ArrayList<>();
+            }
+        }
+        return result;
+    }
+}
  
  /*
 

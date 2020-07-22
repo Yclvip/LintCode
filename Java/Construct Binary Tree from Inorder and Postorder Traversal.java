@@ -1,13 +1,15 @@
 M
+tags: Array, Tree, DFS, Divide and Conquer
 
-写个Inorder和Postorder的例子。利用他们分left/right subtree的规律解题。
+#### DFS, Divide and Conquer
+- 写个Inorder和Postorder的例子。利用他们分left/right subtree的规律解题。
+- Postorder array 的末尾， 就是当下层的root.   
+- 在Inorder array 里面找到这个root,就刚好把左右两边分割成left/right tree。
+- 这题比较tricky地用了一个helper做recursive。 特别要注意处理index的变化, precisely考虑开头结尾
+- runtime: O(n), visit && build all nodes
 
-Postorder array 的末尾， 就是当下层的root.   
-在Inorder array 里面找到这个root,就刚好把左右两边分割成left/right tree。
-
-这题比较tricky地用了一个helper做recursive。 特别要注意处理index的变化, precisely考虑开头结尾
-
-可惜有个不可避免的O(n) find element in array.
+#### Improvement
+- `findMid(arr)` can be replaced with a map<value, index>, no need execute O(n) search at runtime
 
 ```
 /*
@@ -61,7 +63,7 @@ Trick part:
  
 public class Solution {
 
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
+    public TreeNode constructFromPrePost(int[] inorder, int[] postorder) {
         if (inorder.length != postorder.length) {
             return null;
         }
